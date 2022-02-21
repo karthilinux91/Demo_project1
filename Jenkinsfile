@@ -4,7 +4,7 @@ pipeline {
     registryCredential = 'Dockerhub@2022'
     dockerImage = ''
   }
-  agent any
+  agent docker_node
   stages {
     stage('Cloning Git') {
       steps {
@@ -19,7 +19,6 @@ pipeline {
       }
     }
     stage('Push image to Container Registry') {
-      agent { label  'docker_node'}
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
