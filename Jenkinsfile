@@ -4,7 +4,7 @@ pipeline {
     registryCredential = 'Dockerhub@2022'
     dockerImage = ''
   }
-  agent { node { label 'docker_node' }
+  agent { node { label 'docker_node'  }}
     
   stages {
     stage('Cloning Git') {
