@@ -19,6 +19,7 @@ pipeline {
       }
     }
     stage('Push image to Container Registry') {
+      agent { label  'docker_node'}
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
