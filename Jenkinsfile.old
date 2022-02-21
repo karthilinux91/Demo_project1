@@ -1,15 +1,15 @@
 pipeline {
   environment {
     registry = "karthilinux91/simple_webpage"
-    registryCredential = 'Docker_ID'
+    registryCredential = 'Dockerhub@2022'
     dockerImage = ''
   }
   agent { node { label 'docker_node'  }}
-
+    
   stages {
     stage('Cloning Git') {
       steps {
-         git 'https://github.com/karthilinux91/Demo_project1.git'
+         git 'https://github.com/karthilinux91/Demo_project1.git'   
       }
     }
     stage('Building image') {
@@ -20,9 +20,9 @@ pipeline {
       }
     }
     stage('Push image to Container Registry') {
-          steps{
+      steps{
         script {
-          docker.withRegistry( '',registryCredential) {
+          docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
           }
         }
@@ -34,4 +34,5 @@ pipeline {
       }
     }
   }
+
 }
