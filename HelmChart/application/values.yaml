@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   firstservicerepository: karthilinux91/simple_webpage
   tag:
-    firstservice: 14  
+    firstservice: 30  
   pullPolicy: IfNotPresent
 imagePullSecrets: 
 
