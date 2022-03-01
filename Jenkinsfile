@@ -32,12 +32,12 @@ pipeline {
   
        stage('prod deployment') {
           steps{              
-        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f blue.yaml  --namespace blue-green-ns'
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f k8s/blue.yaml  --namespace blue-green-ns'
                 }
                                 } 
      stage('stage deployment') {
           steps{              
-        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f green.yaml  --namespace blue-green-ns'
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f k8s/green.yaml  --namespace blue-green-ns'
                 }
                                 } 
       stage ('WaitForTestingStage') {
@@ -52,7 +52,7 @@ pipeline {
     
       stage('switch traffic blue to green') {
           steps{              
-        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f blue_to_green.yaml  --namespace blue-green-ns'
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f k8s/blue_to_green.yaml  --namespace blue-green-ns'
                 }
                                 } 
     
