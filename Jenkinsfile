@@ -30,14 +30,31 @@ pipeline {
     }
     
   
-       stage('k8s deployment using helm') {
-          steps{
-              
-        sh '''     ls
-        '''
-            
-      }
-    } 
+       stage('prod deployment') {
+          steps{              
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f blue.yaml  --namespace blue-green-ns'
+                }
+                                } 
+     stage('stage deployment') {
+          steps{              
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f green.yaml  --namespace blue-green-ns'
+                }
+                                } 
+      stage ('WaitForTestingStage') {
+            input {
+                message "Ready to SWAP Live Listener?"
+                ok "Yes, go ahead."
+            }
+            steps{
+                echo "Moving on to perform SWAP ..................."
+            }            
+        }
+    
+      stage('switch traffic blue to green') {
+          steps{              
+        sh '/home/centos/linux-amd64/kubectl --kubeconfig /home/centos/linux-amd64/kube.config apply -f blue_to_green.yaml  --namespace blue-green-ns'
+                }
+                                } 
     
     stage('Remove Unused docker image') {
       steps{
