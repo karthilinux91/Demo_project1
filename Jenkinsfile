@@ -33,8 +33,7 @@ pipeline {
        stage('k8s deployment using helm') {
           steps{
               
-        sh '''/home/centos/linux-amd64/kubectl version
-        ls
+        sh '''     ls
         '''
             
       }
