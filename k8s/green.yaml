@@ -15,7 +15,7 @@ spec:
         release: 'v2'
     spec:
       containers:
-        - image: 'karthilinux91/simple_webpage:36'
+        - image: 'karthilinux91/simple_webpage:7'
           name: simplewebpage
           ports:
             - containerPort: 80
