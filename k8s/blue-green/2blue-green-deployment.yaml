@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'APP_NAME'
+  namespace: NAME_SPACE
+spec:
+  selector:
+    matchLabels:
+      app: APP_NAME
+  template:
+    metadata:
+      labels:
+        app: APP_NAME
+        release: 'VERSION'
+    spec:
+      containers:
+        - image: 'IMAGE_NAME:VERSION'
+          name: APP_NAME
+          ports:
+            - containerPort: 80
