@@ -1,0 +1,58 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+ name: NAME_SPACE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'APP_NAME'
+  namespace: NAME_SPACE
+spec:
+  selector:
+    matchLabels:
+      app: APP_NAME
+  template:
+    metadata:
+      labels:
+        app: APP_NAME
+        release: 'VERSION'
+    spec:
+      containers:
+        - image: 'IMAGE_NAME:VERSION'
+          name: APP_NAME
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: CLUSTER_NAME
+  namespace: NAME_SPACE
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: APP_NAME
+    release: 'VERSION'
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: VIRTUAL_NAME
+spec:
+  gateways:
+    - istio-istio-gateway.default.svc.cluster.local
+  hosts:
+    - DNS_NAME.cotest.softwarization.net
+  http:
+    - route:
+        - destination:
+            host: CLUSTER_NAME.NAME_SPACE.svc.cluster.local
+            port:
+              number: 80
+      timeout: 30s
