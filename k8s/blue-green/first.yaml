@@ -1,8 +1,15 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+ name: blue-green-deploy-ns
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
  #name: 'simple-webpage-${parameters.release}'
-  name: 'simple-webpage-v1'
+  name: 'simple-webpage-v9'
+  namespace: blue-green-deploy-ns
 spec:
   selector:
     matchLabels:
@@ -12,10 +19,10 @@ spec:
       labels:
         app: simple-webpage
         #release: '${parameters.release}'
-        release: 'v1'
+        release: 'v9'
     spec:
       containers:
-        - image: 'karthilinux91/simple_webpage:12'
+        - image: 'karthilinux91/simple_webpage:9'
           name: simplewebpage
           ports:
             - containerPort: 80
@@ -23,7 +30,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: blue-cluster-service
+  name: blue-green-cluster-service
+  namespace: blue-green-deploy-ns
 spec:
   ports:
     - name: http
@@ -33,12 +41,12 @@ spec:
   selector:
     app: simple-webpage
     #release: '${parameters.release}'
-    release: 'v1'
+    release: 'v9'
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: blue-virtual-service
+  name: blue-green-virtual-service
 spec:
   gateways:
     - istio-istio-gateway.default.svc.cluster.local
@@ -47,7 +55,7 @@ spec:
   http:
     - route:
         - destination:
-            host: blue-cluster-service.blue-green-ns.svc.cluster.local
+            host: blue-green-cluster-service.blue-green-deploy-ns.svc.cluster.local
             port:
               number: 80
       timeout: 30s
