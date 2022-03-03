@@ -11,5 +11,5 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: APP_NAME
+    app: APP_NAME-VERSION
     release: 'VERSION'

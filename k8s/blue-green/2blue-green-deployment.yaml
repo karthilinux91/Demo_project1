@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 'APP_NAME'
+  name: 'APP_NAME-VERSION'
   namespace: NAME_SPACE
 spec:
   selector:
     matchLabels:
-      app: APP_NAME
+      app: APP_NAME-VERSION
   template:
     metadata:
       labels:
-        app: APP_NAME
+        app: APP_NAME-VERSION
         release: 'VERSION'
     spec:
       containers:
         - image: 'IMAGE_NAME:VERSION'
-          name: APP_NAME
+          name: APP_NAME-VERSION
           ports:
             - containerPort: 80
